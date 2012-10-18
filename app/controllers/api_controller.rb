@@ -40,16 +40,17 @@ class ApiController < ApplicationController
 
       dados = {:codigo_postal => cep, :logradouro => logradouro,  :bairro => response[1].content.strip, :cidade=> cidade, :estado => estado }
 
-      Cep.where(dados).first_or_create
+  else
+    dados = {:codigo_postal => params[:cep]}
+  end
+  
+  @cep = Cep.where(dados).first_or_create
 
-    else
-      dados = {:status => "invalid"}
-    end
 
 
       respond_to do |format|
-        format.json { render :json=> dados }
-        format.xml { render :xml => dados }
+        format.json { render :json=> @cep }
+        format.xml { render :xml => @cep }
       end
 
 
